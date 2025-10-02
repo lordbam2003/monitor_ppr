@@ -1,0 +1,66 @@
+# Archivos y carpetas que no deben subirse al repositorio
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.git
+.mypy_cache
+.pytest_cache
+.hypothesis
+.DS_Store
+.vscode/
+.idea/
+logs/
+*.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.DS_Store
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Archivos temporales del sistema
+*.tmp
+*.temp
+*~
+.DS_Store
+
+# Archivos de credenciales
+credentials.json
+secrets.json
+config.json
+*.pem
+*.key
+*.crt
+
+# Archivos específicos del proyecto que no deben subirse
+create_admin_user.py
+create_database.py
+create_tables.py
+setup_linux.sh
+setup_windows.bat
+
+# Archivos de base de datos locales
+*.db
+*.sqlite
+
+# Archivos de muestra con información sensible
+*.example
