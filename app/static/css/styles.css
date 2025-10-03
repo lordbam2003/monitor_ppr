@@ -1,1 +1,197 @@
- 
+/* Estilos generales para Monitor PPR v2 */
+:root {
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --success-color: #198754;
+    --info-color: #0dcaf0;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Estilos para el login */
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    border-bottom: none;
+    border-radius: 10px 10px 0 0 !important;
+    background: linear-gradient(135deg, var(--primary-color), #0b5ed7);
+}
+
+/* Estilos del dashboard */
+.sidebar {
+    min-height: calc(100vh - 60px); /* Adjust for topbar height */
+    background: linear-gradient(180deg, var(--primary-color), #1a73e8);
+    color: white;
+    box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 0;
+    position: fixed;
+    top: 60px; /* Align below the topbar */
+    left: 0;
+    z-index: 1000;
+}
+
+.sidebar .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    border-radius: 0.375rem;
+    margin: 0.25rem 0.5rem;
+    padding: 0.75rem 1rem;
+}
+
+.sidebar .nav-link:hover, .sidebar .nav-link.active {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar .nav-link i {
+    margin-right: 0.75rem;
+    width: 20px;
+    text-align: center;
+}
+
+.topbar {
+    background-color: white;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    height: 60px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030;
+    margin-bottom: 0;
+}
+
+.navbar-brand {
+    font-weight: 600;
+    color: var(--primary-color) !important;
+}
+
+.content {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    margin-top: 60px; /* Account for fixed topbar */
+    padding-left: 0; /* Will be handled by sidebar width */
+}
+
+@media (min-width: 768px) {
+    .content {
+        padding-left: calc(16.666667% + 0.5rem); /* ~col-lg-2 width + some margin */
+    }
+    .sidebar {
+        width: calc(16.666667% + 0.5rem); /* Match col-lg-2 width */
+    }
+}
+
+/* Estilos para los widgets del dashboard */
+.card-stat {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: transform 0.2s;
+}
+
+.card-stat:hover {
+    transform: translateY(-5px);
+}
+
+.stat-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.stat-icon.bg-primary { background-color: rgba(13, 110, 253, 0.2) !important; }
+.stat-icon.bg-success { background-color: rgba(25, 135, 84, 0.2) !important; }
+.stat-icon.bg-info { background-color: rgba(13, 202, 240, 0.2) !important; }
+.stat-icon.bg-warning { background-color: rgba(255, 193, 7, 0.2) !important; }
+
+/* Estilos para las tablas */
+.table-responsive {
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.table th {
+    background-color: var(--light-color);
+    font-weight: 600;
+}
+
+/* Estilos para los formularios */
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.btn {
+    border-radius: 0.5rem;
+    font-weight: 500;
+}
+
+/* Estilos para alertas */
+.alert {
+    border-radius: 0.5rem;
+    border: none;
+}
+
+/* Estilos para el dropdown de usuario */
+.dropdown .dropdown-toggle::after {
+    display: inline-block;
+    margin-left: 0.255em;
+    vertical-align: 0.255em;
+    content: "";
+    border-top: 0.3em solid;
+    border-right: 0.3em solid transparent;
+    border-bottom: 0;
+    border-left: 0.3em solid transparent;
+}
+
+/* Asegurar que el texto del dropdown se comporte correctamente */
+.navbar-nav .dropdown-menu {
+    position: absolute; /* Fuerza posición absoluta para evitar problemas de layout */
+    margin: 0; /* Remueve márgenes extras */
+}
+
+/* Estilos para los gráficos */
+.chart-container {
+    background: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    margin-bottom: 1.5rem;
+    position: relative; /* Required for Chart.js when maintainAspectRatio is false */
+    height: 300px; /* Specific height to prevent infinite growth */
+}
+
+/* Footer */
+.footer {
+    background-color: white;
+    padding: 1rem 0;
+    margin-top: 2rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .sidebar {
+        min-height: auto;
+    }
+    
+    .content {
+        min-height: auto;
+    }
+}
