@@ -25,6 +25,7 @@ coverage.xml
 .vscode/
 .idea/
 logs/
+node_modules/
 *.env
 .env.local
 .env.development.local
@@ -63,4 +64,4 @@ setup_windows.bat
 *.sqlite
 
 # Archivos de muestra con información sensible
-*.example
+*.examplenode_modules/ 
