@@ -2,12 +2,12 @@
 Modelos de PPR para Monitor PPR v2
 """
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 from app.models import PPREnum
 
 
-from typing import List
+
 
 class PPRBase(BaseModel):
     codigo: str

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de PPR - Monitor PPR v2</title>
+    <!-- Bootstrap 5 -->
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="static/css/fontawesome.min.css">
+    <link rel="stylesheet" href="static/css/styles.css">
+</head>
+<body>
+    <!-- Topbar -->
+    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+        <a class="navbar-brand ms-3" href="dashboard.html">
+            <i class="fas fa-chart-line me-2"></i>Monitor PPR v2
+        </a>
+        
+        <form class="d-none d-sm-inline-block form-inline me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search">
+            <div class="input-group">
+                <input type="text" class="form-control bg-light border-0 small" placeholder="Buscar PPR...">
+                <button class="btn btn-primary" type="button">
+                    <i class="fas fa-search fa-sm"></i>
+                </button>
+            </div>
+        </form>
+
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item dropdown no-arrow mx-1">
+                <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-bs-toggle="dropdown">
+                    <i class="fas fa-bell fa-fw"></i>
+                    <span class="badge bg-danger badge-counter">2</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end p-3 shadow animated--grow-in" aria-labelledby="alertsDropdown">
+                    <h6 class="dropdown-header">Alertas</h6>
+                    <a class="dropdown-item d-flex align-items-center" href="#">
+                        <div class="me-3">
+                            <div class="bg-warning icon-circle">
+                                <i class="fas fa-exclamation-triangle text-white"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="small text-gray-500">Hoy</div>
+                            <span class="font-weight-bold">Actualización de metas pendiente</span>
+                        </div>
+                    </a>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown no-arrow">
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Administrador</span>
+                    <img class="img-profile rounded-circle" src="https://via.placeholder.com/50x50" alt="User">
+                </a>
+                <div class="dropdown-menu dropdown-menu-end shadow animated--grow-in" aria-labelledby="userDropdown">
+                    <a class="dropdown-item" href="#">
+                        <i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>
+                        Perfil
+                    </a>
+                    <a class="dropdown-item" href="#">
+                        <i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>
+                        Configuración
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="index.html">
+                        <i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>
+                        Cerrar Sesión
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 px-0">
+                <div class="sidebar d-md-block">
+                    <div class="p-3">
+                        <h5 class="text-white mb-4"><i class="fas fa-user-shield me-2"></i>Administrador</h5>
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="dashboard.html">
+                                    <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="ppr.html">
+                                    <i class="fas fa-chart-pie me-2"></i>Gestión PPR
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="ceplan.html">
+                                    <i class="fas fa-database me-2"></i>CEPLAN
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="users.html">
+                                    <i class="fas fa-users me-2"></i>Usuarios
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="reports.html">
+                                    <i class="fas fa-file-alt me-2"></i>Reportes
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="settings.html">
+                                    <i class="fas fa-cog me-2"></i>Configuración
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenido Principal -->
+            <div class="col-md-9 col-lg-10">
+                <div class="content px-4">
+                    <!-- Título de la página -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Gestión de PPR</h1>
+                        <div>
+                            <button type="button" class="btn btn-sm btn-primary shadow-sm me-2" data-bs-toggle="modal" data-bs-target="#addPprModal">
+                                <i class="fas fa-plus fa-sm text-white-50 me-1"></i> Nuevo PPR
+                            </button>
+                            <button type="button" class="btn btn-sm btn-success shadow-sm">
+                                <i class="fas fa-file-import fa-sm text-white-50 me-1"></i> Importar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Filtros -->
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <select class="form-select">
+                                <option>Todos los años</option>
+                                <option>2023</option>
+                                <option selected>2024</option>
+                                <option>2025</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select">
+                                <option>Todos los estados</option>
+                                <option>Activo</option>
+                                <option>Inactivo</option>
+                                <option>Suspendido</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Buscar por código o nombre...">
+                                <button class="btn btn-outline-secondary" type="button">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tabla de PPRs -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Programas Presupuestales por Resultado</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="pprTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Código</th>
+                                            <th>Nombre</th>
+                                            <th>Unidad de Medida</th>
+                                            <th>Responsable</th>
+                                            <th>Estado</th>
+                                            <th>Avance</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>PPR-001</td>
+                                            <td>Programa de Salud Materno Infantil</td>
+                                            <td>% de cobertura</td>
+                                            <td>Juan Pérez</td>
+                                            <td><span class="badge bg-success">Activo</span></td>
+                                            <td>
+                                                <div class="progress" style="height: 20px;">
+                                                    <div class="progress-bar" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary me-1" title="Ver detalles">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-info me-1" title="Editar">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-warning me-1" title="Avances">
+                                                    <i class="fas fa-chart-line"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>PPR-002</td>
+                                            <td>Educación Básica Rural</td>
+                                            <td>Número de estudiantes</td>
+                                            <td>María López</td>
+                                            <td><span class="badge bg-success">Activo</span></td>
+                                            <td>
+                                                <div class="progress" style="height: 20px;">
+                                                    <div class="progress-bar" role="progressbar" style="width: 45%;" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">45%</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary me-1" title="Ver detalles">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-info me-1" title="Editar">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-warning me-1" title="Avances">
+                                                    <i class="fas fa-chart-line"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>PPR-003</td>
+                                            <td>Infraestructura Vial</td>
+                                            <td>Kilómetros construidos</td>
+                                            <td>Carlos Gómez</td>
+                                            <td><span class="badge bg-warning">Suspendido</span></td>
+                                            <td>
+                                                <div class="progress" style="height: 20px;">
+                                                    <div class="progress-bar" role="progressbar" style="width: 20%;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">20%</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary me-1" title="Ver detalles">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-info me-1" title="Editar">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-warning me-1" title="Avances">
+                                                    <i class="fas fa-chart-line"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para agregar nuevo PPR -->
+    <div class="modal fade" id="addPprModal" tabindex="-1" aria-labelledby="addPprModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addPprModalLabel">Nuevo Programa Presupuestal por Resultado</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="pprForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="codigo" class="form-label">Código del PPR</label>
+                                    <input type="text" class="form-control" id="codigo" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="nombre" class="form-label">Nombre del PPR</label>
+                                    <input type="text" class="form-control" id="nombre" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="descripcion" class="form-label">Descripción</label>
+                            <textarea class="form-control" id="descripcion" rows="3"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="unidadMedida" class="form-label">Unidad de Medida</label>
+                                    <input type="text" class="form-control" id="unidadMedida">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="estado" class="form-label">Estado</label>
+                                    <select class="form-select" id="estado">
+                                        <option value="activo">Activo</option>
+                                        <option value="inactivo">Inactivo</option>
+                                        <option value="suspendido">Suspendido</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="fechaInicio" class="form-label">Fecha de Inicio</label>
+                                    <input type="date" class="form-control" id="fechaInicio">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="fechaFin" class="form-label">Fecha de Fin</label>
+                                    <input type="date" class="form-control" id="fechaFin">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="responsables" class="form-label">Responsables</label>
+                            <select multiple class="form-select" id="responsables">
+                                <option value="1">Juan Pérez</option>
+                                <option value="2">María López</option>
+                                <option value="3">Carlos Gómez</option>
+                                <option value="4">Ana Rodríguez</option>
+                            </select>
+                            <div class="form-text">Mantenga presionada la tecla Ctrl para seleccionar múltiples responsables</div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="savePprBtn">Guardar PPR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="text-center">
+                <span>Monitor PPR v2 - Sistema de Gestión de Programa Presupuestal por Resultado</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="static/js/bootstrap.bundle.min.js"></script>
+    <script src="static/js/auth.js"></script>
+    <script src="static/js/ppr.js"></script>
+</body>
+</html>
