@@ -7,16 +7,16 @@ from typing import List
 from app.database.session import get_db
 from app.models.user import Usuario, UsuarioCreate, UsuarioUpdate
 from app.database.models import User as DBUser
-from app.utils.auth import get_password_hash
+from app.utils.auth import get_password_hash, get_current_active_user_db
 from app.utils.logger import log_error, log_info
 
 router = APIRouter()
 
 
 @router.get("/", response_model=List[Usuario])
-def get_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+def get_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db), current_user = Depends(get_current_active_user_db)):
     """
-    Obtener lista de usuarios
+    Obtener lista de usuarios (requiere autenticación)
     """
     try:
         users = db.query(DBUser).offset(skip).limit(limit).all()

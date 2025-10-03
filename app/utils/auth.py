@@ -5,11 +5,14 @@ from datetime import datetime, timedelta
 from typing import Optional
 from jose import JWTError, jwt
 from passlib.context import CryptContext
-from fastapi import HTTPException, status
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi import HTTPException, status, Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials, OAuth2PasswordBearer
 from pydantic import BaseModel
+from sqlalchemy.orm import Session
 import os
 from dotenv import load_dotenv
+from app.database.session import get_db
+from app.database.models import User as DBUser, Role as DBRole
 
 # Cargar variables de entorno
 load_dotenv()
@@ -21,6 +24,9 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 SECRET_KEY = os.getenv("SECRET_KEY", "clave_secreta_para_desarrollo")
 ALGORITHM = os.getenv("ALGORITHM", "HS256")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
+
+# Esquema de seguridad OAuth2
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
 
 
 class Token(BaseModel):
@@ -92,3 +98,42 @@ def get_current_user(token: str):
     if token_data is None:
         raise credentials_exception
     return token_data
+
+
+def get_current_active_user(current_user: TokenData = Depends(get_current_user)):
+    """
+    Verifica que el usuario actual esté activo
+    """
+    # Esta función se usaría si necesitamos verificar que el usuario esté activo
+    # En este caso, la verificación ya se hace en el login
+    return current_user
+
+
+def get_current_active_user_db(db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
+    """
+    Obtiene el usuario actual activo desde la base de datos
+    """
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    
+    token_data = verify_token(token)
+    if token_data is None:
+        raise credentials_exception
+    
+    user = db.query(DBUser).filter(DBUser.id == token_data.user_id).first()
+    if user is None or not user.is_active:
+        raise credentials_exception
+        
+    return user
+
+
+def get_current_user_role(db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
+    """
+    Obtiene el rol del usuario actual
+    """
+    user = get_current_active_user_db(db, token)
+    role = db.query(DBRole).filter(DBRole.id == user.role_id).first()
+    return role

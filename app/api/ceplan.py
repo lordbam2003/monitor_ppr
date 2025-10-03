@@ -8,14 +8,15 @@ from app.database.session import get_db
 from app.models.ceplan import CEPLAN, CEPLANCreate, CEPLANUpdate
 from app.database.models import CEPLAN as DBCEPLAN
 from app.utils.logger import log_error, log_info
+from app.utils.auth import get_current_active_user_db  # Importar la dependencia de autenticación
 
 router = APIRouter()
 
 
 @router.get("/", response_model=List[CEPLAN])
-def get_ceplans(skip: int = 0, limit: int = 100, ano_ejecucion: int = None, db: Session = Depends(get_db)):
+def get_ceplans(skip: int = 0, limit: int = 100, ano_ejecucion: int = None, db: Session = Depends(get_db), current_user = Depends(get_current_active_user_db)):
     """
-    Obtener lista de CEPLAN
+    Obtener lista de CEPLAN (requiere autenticación)
     """
     try:
         query = db.query(DBCEPLAN)

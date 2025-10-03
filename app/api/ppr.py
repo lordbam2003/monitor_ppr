@@ -8,14 +8,15 @@ from app.database.session import get_db
 from app.models.ppr import PPR, PPRCreate, PPRUpdate, PPRMeta, PPRMetaCreate, PPRAvance, PPRAvanceCreate, PPRAvanceUpdate
 from app.database.models import PPR as DBPPR, PPRMeta as DBPPRMeta, PPRAvance as DBPPRAvance
 from app.utils.logger import log_error, log_info
+from app.utils.auth import get_current_active_user_db  # Importar la dependencia de autenticación
 
 router = APIRouter()
 
 
 @router.get("/", response_model=List[PPR])
-def get_pprs(skip: int = 0, limit: int = 100, ano_ejecucion: int = None, db: Session = Depends(get_db)):
+def get_pprs(skip: int = 0, limit: int = 100, ano_ejecucion: int = None, db: Session = Depends(get_db), current_user = Depends(get_current_active_user_db)):
     """
-    Obtener lista de PPRs
+    Obtener lista de PPRs (requiere autenticación)
     """
     try:
         query = db.query(DBPPR)
